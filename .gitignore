@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
+artifacts/*
+!artifacts/.gitkeep
+data/raw/
+data/processed/
+*.joblib
+*.pkl
+.env*
+!.env.example
+.DS_Store
