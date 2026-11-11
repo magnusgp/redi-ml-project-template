@@ -1,10 +1,13 @@
 """Explicit final evaluation on the untouched test set."""
 from __future__ import annotations
+
 import argparse
 import json
 from pathlib import Path
+
 import joblib
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_matrix
+
 from .data import assert_disjoint_splits, load_data
 
 
@@ -23,7 +26,7 @@ def final_test(artifact_dir: Path = Path("artifacts"), *, allow_repeat: bool = F
     y_test = data.y[data.test_ids]
     prediction = model.predict(X_test)
     report = {
-        "test_n": int(len(y_test)),
+        "test_n": len(y_test),
         "balanced_accuracy": float(balanced_accuracy_score(y_test, prediction)),
         "accuracy": float(accuracy_score(y_test, prediction)),
         "confusion_matrix": confusion_matrix(y_test, prediction, labels=list(range(10))).tolist(),

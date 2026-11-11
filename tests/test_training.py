@@ -1,7 +1,8 @@
 import pytest
 from sklearn.pipeline import Pipeline
-from redi_ml_project.train import build_model, train
+
 from redi_ml_project.evaluate import final_test
+from redi_ml_project.train import build_model, train
 
 
 def test_preprocessing_is_inside_train_only_pipeline():

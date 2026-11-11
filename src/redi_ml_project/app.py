@@ -2,6 +2,7 @@
 from pathlib import Path
 
 import joblib
+
 from redi_ml_project.data import load_data
 
 

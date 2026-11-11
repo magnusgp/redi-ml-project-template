@@ -1,5 +1,6 @@
 """Real optical digit images; stable, explicitly disjoint splits."""
 from dataclasses import dataclass
+
 import numpy as np
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split

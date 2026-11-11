@@ -1,9 +1,11 @@
 """Train only on training rows; validate on validation rows; never inspect test scores."""
 from __future__ import annotations
+
 import argparse
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
+
 import joblib
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
@@ -11,6 +13,7 @@ from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_m
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+
 from .data import SEED, assert_disjoint_splits, load_data
 
 
@@ -42,9 +45,9 @@ def train(artifact_dir: Path = Path("artifacts")) -> dict:
         "seed": SEED,
         "population_claim": "Similar normalized 8x8 digit images from the same source corpus only; no new-writer claim.",
         "split_sizes": {
-            "train": int(len(data.train_ids)),
-            "validation": int(len(data.validation_ids)),
-            "test_reserved": int(len(data.test_ids)),
+            "train": len(data.train_ids),
+            "validation": len(data.validation_ids),
+            "test_reserved": len(data.test_ids),
         },
         "validation_metrics": {
             "baseline_balanced_accuracy": float(balanced_accuracy_score(y_val, baseline_predictions)),
@@ -58,7 +61,7 @@ def train(artifact_dir: Path = Path("artifacts")) -> dict:
             "balanced_accuracy_std": float(cv_scores.std()),
         },
         "test_policy": "Not evaluated in train.py. Run evaluate.py --final-test ONCE after decisions are frozen.",
-        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "created_utc": datetime.now(UTC).isoformat(),
     }
     artifact_dir.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, artifact_dir / "model.joblib")
